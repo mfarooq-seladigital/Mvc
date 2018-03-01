@@ -110,6 +110,23 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
+        public static IMvcBuilder ConfigureApplicationPartManager(
+            this IMvcBuilder builder,
+            Assembly assembly,
+            string name)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            var assemblyModel = AssemblyPartDiscoveryModel.ResolveAssemblyModel(assembly);
+            var configure = AspNetCore.Mvc.ApplicationParts.ConfigureApplicationPartManager.GetConfigureOperation(assemblyModel, name);
+            configure.Configure(builder.PartManager, assemblyModel);
+
+            return builder;
+        }
+
         /// <summary>
         /// Registers discovered controllers as services in the <see cref="IServiceCollection"/>.
         /// </summary>

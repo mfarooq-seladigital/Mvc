@@ -4,8 +4,10 @@
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 
 namespace MvcSandbox
 {
@@ -14,7 +16,9 @@ namespace MvcSandbox
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc()
+                .ConfigureApplicationPartManager(GetType().Assembly, "LightsOn")
+                ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

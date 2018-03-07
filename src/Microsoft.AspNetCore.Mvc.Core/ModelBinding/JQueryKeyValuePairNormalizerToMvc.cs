@@ -7,12 +7,12 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc.Core;
 using Microsoft.Extensions.Primitives;
 
-namespace Microsoft.AspNetCore.Mvc.ModelBinding.Internal
+namespace Microsoft.AspNetCore.Mvc.ModelBinding
 {
     // Normalizes keys, in a keyvaluepair collection, from jQuery format to a format that MVC understands.
     internal static class JQueryKeyValuePairNormalizerToMvc
     {
-        internal static IDictionary<string, StringValues> GetValues(
+        public static IDictionary<string, StringValues> GetValues(
             IEnumerable<KeyValuePair<string, StringValues>> originalValues,
             int valueCount)
         {

@@ -1,16 +1,12 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
 using Xunit;
 
@@ -85,6 +81,20 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Test
             var valueProvider = Assert.Single(context.ValueProviders);
             var result = valueProvider.GetValue(key);
             Assert.Equal("found", (string)result);
+        }
+
+        [Fact]
+        public async Task DoesNotCreateValueProvider_WhenQueryIsEmpty()
+        {
+            // Arrange
+            var context = CreateContext(new Dictionary<string, StringValues>());
+            var factory = new JQueryQueryStringValueProviderFactory();
+
+            // Act
+            await factory.CreateValueProviderAsync(context);
+
+            // Assert
+            Assert.Empty(context.ValueProviders);
         }
 
         private static ValueProviderFactoryContext CreateContext(Dictionary<string, StringValues> queryStringValues)

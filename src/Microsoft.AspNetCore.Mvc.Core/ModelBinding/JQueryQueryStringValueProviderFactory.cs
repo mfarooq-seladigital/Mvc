@@ -20,13 +20,16 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var request = context.ActionContext.HttpContext.Request;
-            var valueProvider = new JQueryQueryStringValueProvider(
-                BindingSource.Query,
-                JQueryKeyValuePairNormalizerToMvc.GetValues(request.Query, request.Query.Count),
-                CultureInfo.InvariantCulture);
+            var query = context.ActionContext.HttpContext.Request.Query;
+            if (query != null && query.Count > 0)
+            {
+                var valueProvider = new JQueryQueryStringValueProvider(
+                    BindingSource.Query,
+                    JQueryKeyValuePairNormalizerToMvc.GetValues(query, query.Count),
+                    CultureInfo.InvariantCulture);
 
-            context.ValueProviders.Add(valueProvider);
+                context.ValueProviders.Add(valueProvider);
+            }
 
             return Task.CompletedTask;
         }
